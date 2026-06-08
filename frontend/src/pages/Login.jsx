@@ -1,43 +1,71 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
+  const [erro, setErro] = useState("");
+
+  const navigate = useNavigate();
+
+  const { login } = useAuth();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const sucesso = login(email, senha);
+
+    if (sucesso) {
+      navigate("/");
+    } else {
+      setErro("Usuário ou senha inválidos");
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100">
-      <div className="bg-white p-10 rounded-xl shadow-md w-full max-w-md">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-10 rounded-xl shadow-md w-full max-w-md"
+      >
         <h1 className="text-4xl font-bold text-center mb-2">
           CH Entregas
         </h1>
 
         <p className="text-center text-slate-500 mb-8">
-          Sistema de Gerenciamento de Entregas
+          Sistema de Gestão de Entregas
         </p>
 
-        <div className="mb-4">
-          <label className="block mb-2 font-medium">
-            E-mail
-          </label>
+        <input
+          type="email"
+          placeholder="E-mail"
+          className="w-full border p-3 rounded-lg mb-4"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-          <input
-            type="email"
-            className="w-full border rounded-lg p-3"
-            placeholder="Digite seu e-mail"
-          />
-        </div>
+        <input
+          type="password"
+          placeholder="Senha"
+          className="w-full border p-3 rounded-lg mb-4"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+        />
 
-        <div className="mb-6">
-          <label className="block mb-2 font-medium">
-            Senha
-          </label>
+        {erro && (
+          <p className="text-red-500 mb-4">
+            {erro}
+          </p>
+        )}
 
-          <input
-            type="password"
-            className="w-full border rounded-lg p-3"
-            placeholder="Digite sua senha"
-          />
-        </div>
-
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg">
+        <button
+          className="w-full bg-blue-600 text-white p-3 rounded-lg"
+        >
           Entrar
         </button>
-      </div>
+      </form>
     </div>
   );
 }

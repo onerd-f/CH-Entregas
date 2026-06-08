@@ -1,24 +1,19 @@
 import { BrowserRouter } from "react-router-dom";
 
 import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
     <BrowserRouter>
-      <div style={{ display: "flex" }}>
+      <div className="flex bg-slate-100 min-h-screen">
         <Sidebar />
 
-        <div
-          style={{
-            flex: 1,
-            padding: "30px",
-            background: "#F8FAFC",
-            minHeight: "100vh",
-          }}
-        >
+        <main className="flex-1 p-8">
+          <Header />
           <AppRoutes />
-        </div>
+        </main>
       </div>
     </BrowserRouter>
   );

@@ -1,63 +1,97 @@
+import entregas from "../data/entregas";
+import entregadores from "../data/entregadores";
+
 export default function Dashboard() {
   return (
-    <div>
-      <h1>Dashboard</h1>
+    <>
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-slate-800">
+          Dashboard
+        </h1>
 
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          marginTop: "30px",
-        }}
-      >
-        <div
-          style={{
-            background: "#fff",
-            padding: "20px",
-            borderRadius: "10px",
-            width: "200px",
-          }}
-        >
+        <p className="text-slate-500 mt-2">
+          Bem-vindo ao sistema CH Entregas
+        </p>
+      </div>
+
+      <div className="grid grid-cols-4 gap-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm p-6">
           <h3>Total de Entregas</h3>
-          <h1>152</h1>
+          <h2 className="text-4xl font-bold">
+            {entregas.length}
+          </h2>
         </div>
 
-        <div
-          style={{
-            background: "#fff",
-            padding: "20px",
-            borderRadius: "10px",
-            width: "200px",
-          }}
-        >
+        <div className="bg-white rounded-xl shadow-sm p-6">
           <h3>Pendentes</h3>
-          <h1>10</h1>
+          <h2 className="text-4xl font-bold">
+            {entregas.filter(e => e.status === "Pendente").length}
+          </h2>
         </div>
 
-        <div
-          style={{
-            background: "#fff",
-            padding: "20px",
-            borderRadius: "10px",
-            width: "200px",
-          }}
-        >
+        <div className="bg-white rounded-xl shadow-sm p-6">
           <h3>Em Transporte</h3>
-          <h1>24</h1>
+          <h2 className="text-4xl font-bold">
+            {entregas.filter(e => e.status === "Em Transporte").length}
+          </h2>
         </div>
 
-        <div
-          style={{
-            background: "#fff",
-            padding: "20px",
-            borderRadius: "10px",
-            width: "200px",
-          }}
-        >
+        <div className="bg-white rounded-xl shadow-sm p-6">
           <h3>Concluídas</h3>
-          <h1>118</h1>
+          <h2 className="text-4xl font-bold">
+            {entregas.filter(e => e.status === "Concluída").length}
+          </h2>
         </div>
       </div>
-    </div>
+
+      <div className="grid grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h2 className="text-xl font-semibold mb-4">
+            Últimas Entregas
+          </h2>
+
+          <table className="w-full">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-2">Código</th>
+                <th className="text-left py-2">Cliente</th>
+                <th className="text-left py-2">Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {entregas.map((entrega) => (
+                <tr key={entrega.id} className="border-b">
+                  <td className="py-2">{entrega.codigo}</td>
+                  <td>{entrega.cliente}</td>
+                  <td>{entrega.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h2 className="text-xl font-semibold mb-4">
+            Entregadores Ativos
+          </h2>
+
+          {entregadores.map((entregador) => (
+            <div
+              key={entregador.id}
+              className="border-b py-3"
+            >
+              <p className="font-medium">
+                {entregador.nome}
+              </p>
+
+              <p className="text-slate-500 text-sm">
+                {entregador.veiculo}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 }

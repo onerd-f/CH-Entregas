@@ -1,12 +1,12 @@
-import { useState } from "react";
-import entregadoresIniciais from "../data/entregadores";
+import { useState, useEffect } from "react";
+import api from "../services/api";
 
 export default function Entregadores() {
   const [busca, setBusca] = useState("");
 
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
-  const [entregadores, setEntregadores] = useState( entregadoresIniciais);
+  const [entregadores, setEntregadores] =  useState([]);
   const [entregadorEditando, setEntregadorEditando] = useState(null);
 
   const [novoEntregador, setNovoEntregador] = useState({
@@ -15,6 +15,22 @@ export default function Entregadores() {
     veiculo: "",
     status: "Ativo",
   });
+
+  useEffect(() => {
+  carregarEntregadores();
+}, []);
+
+const carregarEntregadores = async () => {
+  try {
+    const response = await api.get(
+      "/entregadores"
+    );
+
+    setEntregadores(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   const filtrados = entregadores.filter((entregador) =>
     entregador.nome.toLowerCase().includes(busca.toLowerCase())
@@ -31,16 +47,25 @@ export default function Entregadores() {
   }
 
   if (entregadorEditando) {
-    setEntregadores(
-      entregadores.map((entregador) =>
-        entregador.id === entregadorEditando
-          ? {
-              ...entregador,
-              ...novoEntregador,
-            }
-          : entregador
-      )
-    );
+    try {
+  await api.post(
+    "/entregadores",
+    novoEntregador
+  );
+
+  carregarEntregadores();
+
+  setNovoEntregador({
+    nome: "",
+    telefone: "",
+    veiculo: "",
+    status: "Ativo",
+  });
+
+  setMostrarFormulario(false);
+} catch (error) {
+  console.error(error);
+}
   } else {
     const entregador = {
       id: Date.now(),

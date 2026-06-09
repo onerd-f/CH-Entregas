@@ -1,11 +1,11 @@
-import { useState } from "react";
-import clientesIniciais from "../data/clientes";
+import { useState, useEffect } from "react";
+import api from "../services/api";
 
 export default function Clientes() {
   const [busca, setBusca] = useState("");
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
-  const [clientes, setClientes] = useState(clientesIniciais);
+  const [clientes, setClientes] = useState([]);
   const [clienteEditando, setClienteEditando] = useState(null);
 
   const [novoCliente, setNovoCliente] = useState({
@@ -15,11 +15,24 @@ export default function Clientes() {
     status: "Ativo",
   });
 
+  useEffect(() => {
+  carregarClientes();
+}, []);
+
+const carregarClientes = async () => {
+  try {
+    const response = await api.get("/clientes");
+    setClientes(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
   const clientesFiltrados = clientes.filter((cliente) =>
     cliente.nome.toLowerCase().includes(busca.toLowerCase())
   );
 
-  const salvarCliente = () => {
+  const salvarCliente = async () => {
   if (
     !novoCliente.nome ||
     !novoCliente.telefone ||
@@ -29,35 +42,23 @@ export default function Clientes() {
     return;
   }
 
-  if (clienteEditando) {
-    setClientes(
-      clientes.map((cliente) =>
-        cliente.id === clienteEditando
-          ? {
-              ...cliente,
-              ...novoCliente,
-            }
-          : cliente
-      )
-    );
-  } else {
-    const cliente = {
-      id: Date.now(),
-      ...novoCliente,
-    };
+  try {
+    await api.post("/clientes", novoCliente);
 
-    setClientes([...clientes, cliente]);
+    await carregarClientes();
+
+    setNovoCliente({
+      nome: "",
+      telefone: "",
+      email: "",
+      status: "Ativo",
+    });
+
+    setMostrarFormulario(false);
+    setClienteEditando(null);
+  } catch (error) {
+    console.error(error);
   }
-
-  setNovoCliente({
-    nome: "",
-    telefone: "",
-    email: "",
-    status: "Ativo",
-  });
-
-  setClienteEditando(null);
-  setMostrarFormulario(false);
 };
 
 const editarCliente = (cliente) => {
@@ -72,16 +73,17 @@ const editarCliente = (cliente) => {
   setMostrarFormulario(true);
 };
 
-const excluirCliente = (id) => {
-  const confirmar = window.confirm(
-    "Deseja realmente excluir este cliente?"
-  );
+const excluirCliente = async (id) => {
+  if (!confirm("Deseja excluir este cliente?")) {
+    return;
+  }
 
-  if (!confirmar) return;
-
-  setClientes(
-    clientes.filter((cliente) => cliente.id !== id)
-  );
+  try {
+    await api.delete(`/clientes/${id}`);
+    carregarClientes();
+  } catch (error) {
+    console.error(error);
+  }
 };
 
   return (

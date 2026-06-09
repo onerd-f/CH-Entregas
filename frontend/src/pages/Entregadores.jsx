@@ -36,7 +36,7 @@ const carregarEntregadores = async () => {
     entregador.nome.toLowerCase().includes(busca.toLowerCase())
   );
 
-  const salvarEntregador = () => {
+  const salvarEntregador = async () => {
   if (
     !novoEntregador.nome ||
     !novoEntregador.telefone ||

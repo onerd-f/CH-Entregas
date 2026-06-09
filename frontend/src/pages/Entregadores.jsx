@@ -46,44 +46,31 @@ const carregarEntregadores = async () => {
     return;
   }
 
-  if (entregadorEditando) {
-    try {
-  await api.post(
-    "/entregadores",
-    novoEntregador
-  );
+  try {
+    if (entregadorEditando) {
+      // depois implementaremos PUT
+      alert("Edição ainda não implementada.");
+    } else {
+      await api.post(
+        "/entregadores",
+        novoEntregador
+      );
+    }
 
-  carregarEntregadores();
+    await carregarEntregadores();
 
-  setNovoEntregador({
-    nome: "",
-    telefone: "",
-    veiculo: "",
-    status: "Ativo",
-  });
+    setNovoEntregador({
+      nome: "",
+      telefone: "",
+      veiculo: "",
+      status: "Ativo",
+    });
 
-  setMostrarFormulario(false);
-} catch (error) {
-  console.error(error);
-}
-  } else {
-    const entregador = {
-      id: Date.now(),
-      ...novoEntregador,
-    };
-
-    setEntregadores([...entregadores, entregador]);
+    setEntregadorEditando(null);
+    setMostrarFormulario(false);
+  } catch (error) {
+    console.error(error);
   }
-
-  setNovoEntregador({
-    nome: "",
-    telefone: "",
-    veiculo: "",
-    status: "Ativo",
-  });
-
-  setEntregadorEditando(null);
-  setMostrarFormulario(false);
 };
 
 const editarEntregador = (entregador) => {

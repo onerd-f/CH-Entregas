@@ -126,4 +126,27 @@ router.delete("/:id", (req, res) => {
   );
 });
 
+router.get("/rastrear/:codigo", (req, res) => {
+  db.get(
+    `
+      SELECT * FROM entregas
+      WHERE codigo = ?
+    `,
+    [req.params.codigo],
+    (err, row) => {
+      if (err) {
+        return res.status(500).json(err);
+      }
+
+      if (!row) {
+        return res.status(404).json({
+          mensagem: "Entrega não encontrada",
+        });
+      }
+
+      res.json(row);
+    }
+  );
+});
+
 export default router;

@@ -3,6 +3,7 @@ import cors from "cors";
 import "./database/database.js";
 import clientesRoutes from "./routes/clientes.js";
 import entregadoresRoutes from "./routes/entregadores.js";
+import entregasRoutes from "./routes/entregas.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(
 app.use(express.json());
 app.use("/clientes", clientesRoutes);
 app.use("/entregadores", entregadoresRoutes);
+app.use("/entregas", entregasRoutes);
 
 app.get("/", (req, res) => {
   res.json({

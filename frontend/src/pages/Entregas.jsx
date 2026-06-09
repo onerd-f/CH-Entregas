@@ -1,12 +1,12 @@
-import { useState } from "react";
-import entregasIniciais from "../data/entregas";
+import { useState, useEffect } from "react";
+import api from "../services/api";
 
 export default function Entregas() {
   const [busca, setBusca] = useState("");
 
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
 
-const [entregas, setEntregas] = useState(entregasIniciais);
+const [entregas, setEntregas] = useState([]);
 const [entregaEditando, setEntregaEditando] = useState(null);
 
 const [novaEntrega, setNovaEntrega] = useState({
@@ -18,6 +18,19 @@ const [novaEntrega, setNovaEntrega] = useState({
   data: "",
   status: "Pendente",
 });
+
+useEffect(() => {
+  carregarEntregas();
+}, []);
+
+const carregarEntregas = async () => {
+  try {
+    const response = await api.get("/entregas");
+    setEntregas(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   const entregasFiltradas = entregas.filter(
     (entrega) =>
@@ -41,7 +54,7 @@ const [novaEntrega, setNovaEntrega] = useState({
     }
   };
 
-  const salvarEntrega = () => {
+  const salvarEntrega = async () => {
   if (
     !novaEntrega.codigo ||
     !novaEntrega.cliente ||
@@ -51,38 +64,36 @@ const [novaEntrega, setNovaEntrega] = useState({
     return;
   }
 
-  if (entregaEditando) {
-    setEntregas(
-      entregas.map((entrega) =>
-        entrega.id === entregaEditando
-          ? {
-              ...entrega,
-              ...novaEntrega,
-            }
-          : entrega
-      )
-    );
-  } else {
-    const entrega = {
-      id: Date.now(),
-      ...novaEntrega,
-    };
+  try {
+    if (entregaEditando) {
+      await api.put(
+        `/entregas/${entregaEditando}`,
+        novaEntrega
+      );
+    } else {
+      await api.post(
+        "/entregas",
+        novaEntrega
+      );
+    }
 
-    setEntregas([...entregas, entrega]);
+    await carregarEntregas();
+
+    setNovaEntrega({
+      codigo: "",
+      cliente: "",
+      entregador: "",
+      origem: "",
+      destino: "",
+      data: "",
+      status: "Pendente",
+    });
+
+    setEntregaEditando(null);
+    setMostrarFormulario(false);
+  } catch (error) {
+    console.error(error);
   }
-
-  setNovaEntrega({
-    codigo: "",
-    cliente: "",
-    entregador: "",
-    origem: "",
-    destino: "",
-    data: "",
-    status: "Pendente",
-  });
-
-  setEntregaEditando(null);
-  setMostrarFormulario(false);
 };
 
 const editarEntrega = (entrega) => {
@@ -100,18 +111,19 @@ const editarEntrega = (entrega) => {
   setMostrarFormulario(true);
 };
 
-const excluirEntrega = (id) => {
+const excluirEntrega = async (id) => {
   const confirmar = window.confirm(
     "Deseja realmente excluir esta entrega?"
   );
 
   if (!confirmar) return;
 
-  setEntregas(
-    entregas.filter(
-      (entrega) => entrega.id !== id
-    )
-  );
+  try {
+    await api.delete(`/entregas/${id}`);
+    carregarEntregas();
+  } catch (error) {
+    console.error(error);
+  }
 };
 
   return (

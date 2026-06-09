@@ -1,5 +1,27 @@
-import entregas from "../data/entregas";
-import entregadores from "../data/entregadores";
+import { useEffect, useState } from "react";
+import api from "../services/api";
+
+const [entregas, setEntregas] = useState([]);
+const [entregadores, setEntregadores] = useState([]);
+
+useEffect(() => {
+  carregarDados();
+}, []);
+
+const carregarDados = async () => {
+  try {
+    const [resEntregas, resEntregadores] =
+      await Promise.all([
+        api.get("/entregas"),
+        api.get("/entregadores"),
+      ]);
+
+    setEntregas(resEntregas.data);
+    setEntregadores(resEntregadores.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export default function Dashboard() {
   return (

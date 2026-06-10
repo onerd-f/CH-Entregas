@@ -28,8 +28,20 @@ router.post("/", (req, res) => {
     status,
   } = req.body;
 
-  db.run(
-    `
+  ddb.get(
+  "SELECT COUNT(*) as total FROM entregas",
+  [],
+  (err, row) => {
+    if (err) {
+      return res.status(500).json(err);
+    }
+
+    const codigo =
+      "CH" +
+      String(row.total + 1).padStart(6, "0");
+
+    db.run(
+      `
       INSERT INTO entregas
       (
         codigo,
@@ -41,27 +53,30 @@ router.post("/", (req, res) => {
         status
       )
       VALUES (?, ?, ?, ?, ?, ?, ?)
-    `,
-    [
-      codigo,
-      cliente,
-      entregador,
-      origem,
-      destino,
-      data,
-      status,
-    ],
-    function (err) {
-      if (err) {
-        return res.status(500).json(err);
-      }
+      `,
+      [
+        codigo,
+        cliente,
+        entregador,
+        origem,
+        destino,
+        data,
+        status,
+      ],
+      function (err) {
+        if (err) {
+          return res.status(500).json(err);
+        }
 
-      res.json({
-        id: this.lastID,
-        mensagem: "Entrega criada",
-      });
-    }
-  );
+        res.json({
+          id: this.lastID,
+          codigo,
+          mensagem: "Entrega criada",
+        });
+      }
+    );
+  }
+);
 });
 
 router.put("/:id", (req, res) => {

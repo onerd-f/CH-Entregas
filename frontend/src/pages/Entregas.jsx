@@ -10,7 +10,6 @@ const [entregas, setEntregas] = useState([]);
 const [entregaEditando, setEntregaEditando] = useState(null);
 
 const [novaEntrega, setNovaEntrega] = useState({
-  codigo: "",
   cliente: "",
   entregador: "",
   origem: "",
@@ -56,10 +55,9 @@ const carregarEntregas = async () => {
 
   const salvarEntrega = async () => {
   if (
-    !novaEntrega.codigo ||
-    !novaEntrega.cliente ||
-    !novaEntrega.entregador
-  ) {
+  !novaEntrega.cliente ||
+  !novaEntrega.entregador
+) {
     alert("Preencha os campos obrigatórios.");
     return;
   }
@@ -156,19 +154,6 @@ const excluirEntrega = async (id) => {
 </h2>
 
     <div className="grid grid-cols-2 gap-4">
-      <input
-        type="text"
-        placeholder="Código"
-        value={novaEntrega.codigo}
-        onChange={(e) =>
-          setNovaEntrega({
-            ...novaEntrega,
-            codigo: e.target.value,
-          })
-        }
-        className="border rounded-lg p-3"
-      />
-
       <input
         type="text"
         placeholder="Cliente"

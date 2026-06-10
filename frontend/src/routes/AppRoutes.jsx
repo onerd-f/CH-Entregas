@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-
+import AdminRoute from "../components/AdminRoute";
 import Dashboard from "../pages/Dashboard";
 import Clientes from "../pages/Clientes";
 import Entregadores from "../pages/Entregadores";
@@ -25,22 +25,31 @@ export default function AppRoutes() {
       />
 
       <Route
-        path="/clientes"
-        element={
-          <ProtectedRoute>
-            <Clientes />
-          </ProtectedRoute>
-        }
-      />
+  path="/clientes"
+  element={
+    <AdminRoute>
+      <Clientes />
+    </AdminRoute>
+  }
+/>
 
-      <Route
-        path="/entregadores"
-        element={
-          <ProtectedRoute>
-            <Entregadores />
-          </ProtectedRoute>
-        }
-      />
+<Route
+  path="/entregadores"
+  element={
+    <AdminRoute>
+      <Entregadores />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/relatorios"
+  element={
+    <AdminRoute>
+      <Relatorios />
+    </AdminRoute>
+  }
+/>
 
       <Route
         path="/entregas"
@@ -59,15 +68,5 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
-
-      <Route
-        path="/relatorios"
-        element={
-          <ProtectedRoute>
-            <Relatorios />
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
   );
 }

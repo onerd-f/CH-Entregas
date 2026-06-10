@@ -49,6 +49,15 @@ db.serialize(() => {
       status TEXT DEFAULT 'Pendente'
     )
   `);
+  db.run(`
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  senha TEXT NOT NULL,
+  perfil TEXT NOT NULL
+)
+`);
 });
 
 export default db;

@@ -218,9 +218,8 @@ const excluirEntrega = async (id) => {
         }
         className="border rounded-lg p-3"
       />
-    </div>
 
-    <select
+      <select
   value={novaEntrega.status}
   onChange={(e) =>
     setNovaEntrega({
@@ -242,6 +241,7 @@ const excluirEntrega = async (id) => {
     Concluída
   </option>
 </select>
+    </div>
 
     <div className="mt-4 flex gap-3">
       <button

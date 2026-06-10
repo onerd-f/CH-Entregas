@@ -19,7 +19,6 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   const {
-    codigo,
     cliente,
     entregador,
     origem,
@@ -28,7 +27,7 @@ router.post("/", (req, res) => {
     status,
   } = req.body;
 
-  ddb.get(
+  db.get(
   "SELECT COUNT(*) as total FROM entregas",
   [],
   (err, row) => {

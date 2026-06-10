@@ -9,6 +9,8 @@ export default function Sidebar() {
     localStorage.getItem("usuario")
   );
 
+  console.log(usuario);
+
   const menu = [
     { nome: "Dashboard", rota: "/" },
 

@@ -1,26 +1,33 @@
 import { useState } from "react";
-import entregas from "../data/entregas";
+import api from "../services/api";
 
 export default function Rastreamento() {
   const [codigo, setCodigo] = useState("");
   const [resultado, setResultado] = useState(null);
 
-  const consultarEntrega = () => {
-  const entrega = entregas.find(
-    (item) =>
-      item.codigo.toUpperCase() ===
-      codigo.toUpperCase()
-  );
+  const consultarEntrega = async () => {
+  try {
+    const response = await api.get("/entregas");
 
-  if (!entrega) {
+    const entrega = response.data.find(
+      (item) =>
+        item.codigo.toUpperCase() ===
+        codigo.toUpperCase()
+    );
+
+    if (!entrega) {
+      setResultado({ erro: true });
+      return;
+    }
+
+    setResultado(entrega);
+  } catch (error) {
+    console.error(error);
+
     setResultado({
       erro: true,
     });
-
-    return;
   }
-
-  setResultado(entrega);
 };
 
   return (

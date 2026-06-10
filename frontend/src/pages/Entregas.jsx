@@ -102,7 +102,7 @@ const editarEntrega = (entrega) => {
     origem: entrega.origem || "",
     destino: entrega.destino || "",
     data: entrega.data || "",
-    status: entrega.status,
+    status: entrega.status || "Pendente",
   });
 
   setEntregaEditando(entrega.id);

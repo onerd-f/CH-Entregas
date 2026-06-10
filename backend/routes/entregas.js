@@ -80,7 +80,6 @@ router.post("/", (req, res) => {
 
 router.put("/:id", (req, res) => {
   const {
-    codigo,
     cliente,
     entregador,
     origem,
@@ -91,19 +90,17 @@ router.put("/:id", (req, res) => {
 
   db.run(
     `
-      UPDATE entregas
-      SET
-        codigo = ?,
-        cliente = ?,
-        entregador = ?,
-        origem = ?,
-        destino = ?,
-        data = ?,
-        status = ?
-      WHERE id = ?
+    UPDATE entregas
+    SET
+      cliente = ?,
+      entregador = ?,
+      origem = ?,
+      destino = ?,
+      data = ?,
+      status = ?
+    WHERE id = ?
     `,
     [
-      codigo,
       cliente,
       entregador,
       origem,

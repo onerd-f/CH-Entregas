@@ -10,17 +10,17 @@ export function AuthProvider({ children }) {
   const login = (email, senha) => {
     const usuarios = [
       {
-        email: "admin@chentregas.com",
-        senha: "123456",
-        nome: "Carlos Henrique",
-        perfil: "Administrador",
-      },
-      {
-        email: "entregador@chentregas.com",
-        senha: "123456",
-        nome: "José Santos",
-        perfil: "Entregador",
-      },
+  email: "admin@chentregas.com",
+  senha: "123456",
+  nome: "Carlos Henrique",
+  perfil: "admin",
+},
+{
+  email: "entregador@chentregas.com",
+  senha: "123456",
+  nome: "José Santos",
+  perfil: "operador",
+},
     ];
 
     const usuarioEncontrado = usuarios.find(

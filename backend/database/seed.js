@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import db from "./database/database.js";
+import db from "./database.js";
 
 const criarUsuarios = async () => {
   const senhaAdmin = await bcrypt.hash(

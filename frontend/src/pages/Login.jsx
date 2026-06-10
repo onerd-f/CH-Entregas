@@ -1,26 +1,42 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import api from "../services/api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-
   const [erro, setErro] = useState("");
 
   const navigate = useNavigate();
 
-  const { login } = useAuth();
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const sucesso = login(email, senha);
+    try {
+      const response = await api.post(
+        "/auth/login",
+        {
+          email,
+          senha,
+        }
+      );
 
-    if (sucesso) {
+      localStorage.setItem(
+        "token",
+        response.data.token
+      );
+
+      localStorage.setItem(
+        "usuario",
+        JSON.stringify(
+          response.data.usuario
+        )
+      );
+
       navigate("/");
-    } else {
-      setErro("Usuário ou senha inválidos");
+    } catch (error) {
+      setErro("E-mail ou senha inválidos");
+      console.error(error);
     }
   };
 
@@ -61,6 +77,7 @@ export default function Login() {
         )}
 
         <button
+          type="submit"
           className="w-full bg-blue-600 text-white p-3 rounded-lg"
         >
           Entrar

@@ -13,13 +13,13 @@ export function AuthProvider({ children }) {
   email: "admin@chentregas.com",
   senha: "123456",
   nome: "Carlos Henrique",
-  perfil: "admin",
+  perfil: "Administrador",
 },
 {
   email: "entregador@chentregas.com",
   senha: "123456",
   nome: "José Santos",
-  perfil: "operador",
+  perfil: "Entregador",
 },
     ];
 

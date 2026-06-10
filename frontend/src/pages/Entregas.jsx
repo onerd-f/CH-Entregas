@@ -218,30 +218,35 @@ const excluirEntrega = async (id) => {
         }
         className="border rounded-lg p-3"
       />
-
-      <select
-  value={novaEntrega.status}
-  onChange={(e) =>
-    setNovaEntrega({
-      ...novaEntrega,
-      status: e.target.value,
-    })
-  }
-  className="border rounded-lg p-3"
->
-  <option value="Pendente">
-    Pendente
-  </option>
-
-  <option value="Em Transporte">
-    Em Transporte
-  </option>
-
-  <option value="Concluída">
-    Concluída
-  </option>
-</select>
     </div>
+    <div className="mt-4">
+  <label className="block mb-2 font-medium">
+    Status
+  </label>
+
+  <select
+    value={novaEntrega.status}
+    onChange={(e) =>
+      setNovaEntrega({
+        ...novaEntrega,
+        status: e.target.value,
+      })
+    }
+    className="w-full border rounded-lg p-3"
+  >
+    <option value="Pendente">
+      Pendente
+    </option>
+
+    <option value="Em Transporte">
+      Em Transporte
+    </option>
+
+    <option value="Concluída">
+      Concluída
+    </option>
+  </select>
+</div>
 
     <div className="mt-4 flex gap-3">
       <button

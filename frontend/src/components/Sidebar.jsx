@@ -11,35 +11,21 @@ export default function Sidebar() {
 
   console.log(usuario);
 
-  const menu = [
-    { nome: "Dashboard", rota: "/" },
-
-    ...(usuario?.perfil === "Administrador"
-      ? [
-          {
-            nome: "Clientes",
-            rota: "/clientes",
-          },
-          {
-            nome: "Entregadores",
-            rota: "/entregadores",
-          },
-          {
-            nome: "Relatórios",
-            rota: "/relatorios",
-          },
-        ]
-      : []),
-
-    {
-      nome: "Entregas",
-      rota: "/entregas",
-    },
-    {
-      nome: "Rastreamento",
-      rota: "/rastreamento",
-    },
-  ];
+ const menu =
+  usuario?.perfil === "Entregador"
+    ? [
+        { nome: "Dashboard", rota: "/" },
+        { nome: "Entregas", rota: "/entregas" },
+        { nome: "Rastreamento", rota: "/rastreamento" },
+      ]
+    : [
+        { nome: "Dashboard", rota: "/" },
+        { nome: "Clientes", rota: "/clientes" },
+        { nome: "Entregadores", rota: "/entregadores" },
+        { nome: "Entregas", rota: "/entregas" },
+        { nome: "Rastreamento", rota: "/rastreamento" },
+        { nome: "Relatórios", rota: "/relatorios" },
+      ];
 
   return (
     <aside className="w-64 min-h-screen bg-slate-950 text-white p-6 flex flex-col">

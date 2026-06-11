@@ -12,7 +12,7 @@ export default function Sidebar() {
   console.log(usuario);
 
  const menu =
-  usuario?.perfil === "Entregador"
+  usuario?.perfil === "operador"
     ? [
         { nome: "Dashboard", rota: "/" },
         { nome: "Entregas", rota: "/entregas" },

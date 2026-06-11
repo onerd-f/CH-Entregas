@@ -55,13 +55,13 @@ router.put("/:id", (req, res) => {
 
   db.run(
     `
-      UPDATE entregadores
-      SET
+    UPDATE entregadores
+    SET
       nome = ?,
       telefone = ?,
       veiculo = ?,
       status = ?
-      WHERE id = ?
+    WHERE id = ?
     `,
     [
       nome,
@@ -71,6 +71,7 @@ router.put("/:id", (req, res) => {
       req.params.id,
     ],
     function (err) {
+
       if (err) {
         return res.status(500).json(err);
       }

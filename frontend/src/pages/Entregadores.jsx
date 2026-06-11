@@ -47,14 +47,21 @@ const carregarEntregadores = async () => {
   }
 
   try {
+
     if (entregadorEditando) {
-      // depois implementaremos PUT
-      alert("Edição ainda não implementada.");
+
+      await api.put(
+        `/entregadores/${entregadorEditando}`,
+        novoEntregador
+      );
+
     } else {
+
       await api.post(
         "/entregadores",
         novoEntregador
       );
+
     }
 
     await carregarEntregadores();
@@ -68,6 +75,7 @@ const carregarEntregadores = async () => {
 
     setEntregadorEditando(null);
     setMostrarFormulario(false);
+
   } catch (error) {
     console.error(error);
   }
@@ -85,18 +93,19 @@ const editarEntregador = (entregador) => {
   setMostrarFormulario(true);
 };
 
-const excluirEntregador = (id) => {
+const excluirEntregador = async (id) => {
   const confirmar = window.confirm(
     "Deseja realmente excluir este entregador?"
   );
 
   if (!confirmar) return;
 
-  setEntregadores(
-    entregadores.filter(
-      (entregador) => entregador.id !== id
-    )
-  );
+  try {
+    await api.delete(`/entregadores/${id}`);
+    await carregarEntregadores();
+  } catch (error) {
+    console.error(error);
+  }
 };
 
   return (

@@ -37,24 +37,40 @@ router.post("/", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
-  const { nome, telefone, email, status } = req.body;
-  const { id } = req.params;
+  const {
+    nome,
+    telefone,
+    email,
+    status,
+  } = req.body;
 
   db.run(
     `
     UPDATE clientes
-    SET nome = ?, telefone = ?, email = ?, status = ?
+    SET
+      nome = ?,
+      telefone = ?,
+      email = ?,
+      status = ?
     WHERE id = ?
     `,
-    [nome, telefone, email, status, id],
+    [
+      nome,
+      telefone,
+      email,
+      status,
+      req.params.id,
+    ],
     function (err) {
+
       if (err) {
         return res.status(500).json(err);
       }
 
       res.json({
-        mensagem: "Cliente atualizado com sucesso"
+        mensagem: "Cliente atualizado"
       });
+
     }
   );
 });

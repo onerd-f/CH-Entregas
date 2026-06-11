@@ -43,7 +43,22 @@ const carregarClientes = async () => {
   }
 
   try {
-    await api.post("/clientes", novoCliente);
+
+    if (clienteEditando) {
+
+      await api.put(
+        `/clientes/${clienteEditando}`,
+        novoCliente
+      );
+
+    } else {
+
+      await api.post(
+        "/clientes",
+        novoCliente
+      );
+
+    }
 
     await carregarClientes();
 
@@ -56,6 +71,7 @@ const carregarClientes = async () => {
 
     setMostrarFormulario(false);
     setClienteEditando(null);
+
   } catch (error) {
     console.error(error);
   }

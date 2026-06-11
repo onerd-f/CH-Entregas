@@ -34,6 +34,8 @@ export default function Login() {
           response.data.usuario
         )
       );
+      
+      setUsuario(response.data.usuario);
 
       navigate("/");
     } catch (error) {

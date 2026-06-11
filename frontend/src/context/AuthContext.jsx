@@ -3,53 +3,25 @@ import { createContext, useContext, useState } from "react";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [usuario, setUsuario] = useState(
-    JSON.parse(localStorage.getItem("usuario")) || null
-  );
-
-  const login = (email, senha) => {
-    const usuarios = [
-      {
-  email: "admin@chentregas.com",
-  senha: "123456",
-  nome: "Carlos Henrique",
-  perfil: "Administrador",
-},
-{
-  email: "entregador@chentregas.com",
-  senha: "123456",
-  nome: "José Santos",
-  perfil: "Entregador",
-},
-    ];
-
-    const usuarioEncontrado = usuarios.find(
-      (u) => u.email === email && u.senha === senha
-    );
-
-    if (usuarioEncontrado) {
-      localStorage.setItem(
-        "usuario",
-        JSON.stringify(usuarioEncontrado)
-      );
-
-      setUsuario(usuarioEncontrado);
-      return true;
-    }
-
-    return false;
-  };
+  const [usuario, setUsuario] = useState(() => {
+    const dados = localStorage.getItem("usuario");
+    return dados ? JSON.parse(dados) : null;
+  });
 
   const logout = () => {
     localStorage.removeItem("usuario");
+    localStorage.removeItem("token");
+
     setUsuario(null);
+
+    window.location.href = "#/login";
   };
 
   return (
     <AuthContext.Provider
       value={{
         usuario,
-        login,
+        setUsuario,
         logout,
       }}
     >

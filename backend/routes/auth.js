@@ -12,9 +12,6 @@ router.post("/login", (req, res) => {
     "SELECT * FROM usuarios WHERE email = ?",
     [email],
     async (err, usuario) => {
-
-      console.log("USUARIO:", usuario);
-
       if (!usuario) {
         return res.status(401).json({
           mensagem: "Usuário inválido"
@@ -26,8 +23,6 @@ router.post("/login", (req, res) => {
           senha,
           usuario.senha
         );
-
-        console.log("SENHA VALIDA:", senhaValida);
 
       if (!senhaValida) {
         return res.status(401).json({

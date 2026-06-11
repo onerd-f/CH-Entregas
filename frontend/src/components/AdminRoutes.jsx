@@ -9,7 +9,7 @@ export default function AdminRoute({ children }) {
     return <Navigate to="/login" />;
   }
 
-  if (usuario.perfil !== "Administrador") {
+  if (usuario.perfil !== "admin") {
     return <Navigate to="/" />;
   }
 

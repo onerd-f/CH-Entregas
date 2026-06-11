@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import AdminRoute from "../components/AdminRoute";
+import AdminRoute from "../components/AdminRoutes";
 import Dashboard from "../pages/Dashboard";
 import Clientes from "../pages/Clientes";
 import Entregadores from "../pages/Entregadores";
